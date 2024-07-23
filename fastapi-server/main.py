@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routes.user_route import user_router
-
+# test 중입니다.
 
 # 출처 등록 (CORS)
 origins = ["*"]
