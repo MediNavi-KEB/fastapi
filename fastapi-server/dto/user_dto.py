@@ -13,3 +13,16 @@ class UserCreateModel(BaseModel):
 class UserLoginModel(BaseModel):
     id: str
     password: str
+
+class UserDeleteModel(BaseModel):
+    id: str
+    password: str
+
+class UserUpdateModel(BaseModel):
+    id: str
+    password: Optional[str] = None
+    name: Optional[str] = None
+    phone: Optional[str] = None
+    email: Optional[str] = None
+    address: Optional[str] = None
+    gender: Optional[str] = None
