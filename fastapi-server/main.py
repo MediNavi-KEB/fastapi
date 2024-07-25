@@ -1,7 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routes.user_route import user_router
-# test 중입니다.
 
 # 출처 등록 (CORS)
 origins = ["*"]
@@ -17,6 +16,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# python main.py로 실행
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="127.0.0.1", port=8000, reload=True)
+    uvicorn.run(app, host="0.0.0.0", port=8080, reload=True)

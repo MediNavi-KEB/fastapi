@@ -4,9 +4,9 @@ from db.session import Base
 
 
 class User(Base):
-    __tablename__ = "user"
+    __tablename__ = "users"
 
-    id = Column(String(50), primary_key=True, index=True)
+    user_id = Column(String(50), primary_key=True, index=True)
     password = Column(String(255), nullable=False)
     name = Column(String(100), nullable=False)
     phone = Column(String(20))
