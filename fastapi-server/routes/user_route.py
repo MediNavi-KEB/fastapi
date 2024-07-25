@@ -29,5 +29,5 @@ def update(user_id: str, user_update: UserUpdateModel, db: Session = Depends(get
 
 @user_router.post("/id-check")
 def check_id(request: UserIdCheckModel, db:Session = Depends(get_db)):
-    exists = user_service.check_duplicate_id(db, request.id)
+    exists = user_service.check_duplicate_id(db, request.user_id)
     return {"exists" : exists}

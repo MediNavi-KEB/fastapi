@@ -23,4 +23,4 @@ class UserUpdateModel(BaseModel):
     gender: Optional[str] = None
 
 class UserIdCheckModel(BaseModel):
-    id : str
+    user_id : str
