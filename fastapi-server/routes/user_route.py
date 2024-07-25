@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from dto.user_dto import UserCreateModel, UserLoginModel, UserUpdateModel
+from dto.user_dto import UserCreateModel, UserLoginModel, UserUpdateModel, UserIdCheckModel
 from services import user_service
 from db.connection import get_db
 
@@ -25,3 +25,9 @@ def delete(user_id: str, db: Session = Depends(get_db)):
 @user_router.put("/update/{user_id}")
 def update(user_id: str, user_update: UserUpdateModel, db: Session = Depends(get_db)):
     return user_service.update_user(db, user_id, user_update)
+
+
+@user_router.post("/id-check")
+def check_id(request: UserIdCheckModel, db:Session = Depends(get_db)):
+    exists = user_service.check_duplicate_id(db, request.id)
+    return {"exists" : exists}

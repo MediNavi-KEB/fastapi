@@ -21,3 +21,6 @@ class UserUpdateModel(BaseModel):
     email: Optional[str] = None
     address: Optional[str] = None
     gender: Optional[str] = None
+
+class UserIdCheckModel(BaseModel):
+    id : str
