@@ -1,10 +1,9 @@
-from db.session import SessionLocal
+from sqlalchemy import create_engine
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
 
+SQLALCHEMY_DATABASE_URL = "sqlite:///./test.db"
 
-def get_db():
-	db = SessionLocal()
-	try:
-		yield db # DB 연결 성공한 경우, DB 세션 시작
-	finally:
-		db.close()
-		# db 세션이 시작된 후, API 호출이 마무리되면 DB 세션을 닫아준다.
+engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False})
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+Base = declarative_base()
