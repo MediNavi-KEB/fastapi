@@ -32,6 +32,12 @@ def update_user(db: Session, user_id: str, user_update: UserUpdateModel):
         raise HTTPException(status_code=400, detail="아이디를 찾을 수 없습니다.")
     return user_crud.update_user_db(db, db_user, user_update)
 
+
 def check_duplicate_id(db: Session, user_id : str):
     db_user = user_crud.get_user_by_id(db, user_id)
     return db_user is not None
+
+
+def get_user(db: Session, user_id: str):
+    db_user = user_crud.get_user_by_id(db, user_id)
+    return db_user

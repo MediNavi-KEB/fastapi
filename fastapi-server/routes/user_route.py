@@ -31,3 +31,8 @@ def update(user_id: str, user_update: UserUpdateModel, db: Session = Depends(get
 def check_id(request: UserIdCheckModel, db:Session = Depends(get_db)):
     exists = user_service.check_duplicate_id(db, request.user_id)
     return {"exists" : exists}
+
+
+@user_router.get("/get/{user_id}")
+def get_user(user_id: str, db: Session = Depends(get_db)):
+    return user_service.get_user(db, user_id)
