@@ -1,16 +1,20 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routes.user_route import user_router
-from routes.favorite_route import favorite_router  # 일관성 있게 변경
+from routes.disease_route import disease_router
+from routes.favorite_route import favorite_router
+from routes.disease_route import disease_router
 import uvicorn
+
 
 # 출처 등록 (CORS)
 origins = ["*"]
 
 app = FastAPI()
 
-app.include_router(user_router, prefix="/users", )
+app.include_router(user_router, prefix="/user")
 app.include_router(favorite_router, prefix="/favorites", )
+app.include_router(disease_router, prefix="/disease")
 
 app.add_middleware(
     CORSMiddleware,
