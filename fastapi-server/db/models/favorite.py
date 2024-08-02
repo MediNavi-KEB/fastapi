@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, ForeignKey
-from sqlalchemy.orm import relationship
+#from sqlalchemy.orm import relationship
 from db.session import Base
 
 class Favorite(Base):
@@ -9,4 +9,4 @@ class Favorite(Base):
     name = Column(String, index=True)
     user_id = Column(Integer, ForeignKey("users.id"))
 
-    user = relationship("User", back_populates="favorites")
+    #user = relationship("User", back_populates="favorites")

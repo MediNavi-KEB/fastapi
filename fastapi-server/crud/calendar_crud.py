@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 from db.models.calendar import Calendar
 from dto.calendar_dto import CalendarCreateModel, CalendarUpdateModel
 from datetime import datetime
-from sqlalchemy import cast, Date
+from sqlalchemy import cast, Date, extract
 
 
 def get_calendar_by_id(db: Session, calendar_id: int):
@@ -11,10 +11,35 @@ def get_calendar_by_id(db: Session, calendar_id: int):
 
 def get_calendar_by_id_and_date(db: Session, user_id: str, date_str: str):
     specific_date = datetime.strptime(date_str, "%Y-%m-%d").date()
-    return db.query(Calendar).filter(
+    db_calendar = db.query(Calendar).filter(
         Calendar.user_id == user_id,
         cast(Calendar.date_time, Date) == specific_date
     ).all()
+
+    return [
+        CalendarUpdateModel(
+            date_time=calendar.date_time,
+            memo_category=calendar.memo_category,
+            memo_content=calendar.memo_content
+        ) for calendar in db_calendar
+    ]
+
+
+def get_calendar_by_id_and_year(db: Session, user_id: str, year_str: str):
+    specific_year = datetime.strptime(year_str, "%Y").year
+    db_calendar = db.query(Calendar).filter(
+        Calendar.user_id == user_id,
+        extract("year", Calendar.date_time) == specific_year
+    ).all()
+
+    return [
+        CalendarUpdateModel(
+            date_time=calendar.date_time,
+            memo_category=calendar.memo_category,
+            memo_content=calendar.memo_content
+        ) for calendar in db_calendar
+    ]
+
 
 
 def create_calendar(db: Session, calendar: CalendarCreateModel, user_id: str):
@@ -28,18 +53,6 @@ def create_calendar(db: Session, calendar: CalendarCreateModel, user_id: str):
     db.commit()
     db.refresh(db_calendar)
     return db_calendar
-
-
-def read_calendar(db: Session, calendar_id: int):
-    db_calendar = db.query(Calendar).filter(Calendar.calendar_id == calendar_id).first()
-
-    if db_calendar:
-        return CalendarCreateModel(
-            date_time=db_calendar.date_time,
-            memo_category=db_calendar.memo_category,
-            memo_content=db_calendar.memo_content
-        )
-    return None
 
 
 def delete_calendar(db: Session, calendar_id: int):

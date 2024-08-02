@@ -14,9 +14,9 @@ def register_calendar(calendar: CalendarCreateModel, db: Session = Depends(get_d
     return calendar_service.register_calendar(db, calendar)
 
 
-@calendar_router.get("/read/{user_id}/{date}", response_model=List[CalendarCreateModel])
-def read_calendar(user_id: str, date: str, db: Session = Depends(get_db)):
-    return calendar_service.read_calendar(db, user_id, date)
+@calendar_router.get("/read/{user_id}/{date}", response_model=List[CalendarUpdateModel])
+def read_calendar_date(user_id: str, date: str, db: Session = Depends(get_db)):
+    return calendar_service.read_calendar_date(db, user_id, date)
 
 
 @calendar_router.delete("/delete/{calendar_id}")
@@ -27,3 +27,8 @@ def delete_calendar(calendar_id: int, db: Session = Depends(get_db)):
 @calendar_router.put("/update/{calendar_id}")
 def update_calendar(calendar_id: int, calendar_update: CalendarUpdateModel, db: Session = Depends(get_db)):
     return calendar_service.update_calendar(db, calendar_id, calendar_update)
+
+
+@calendar_router.get("/read/year/{user_id}/{year}", response_model=List[CalendarUpdateModel])
+def read_calendar_year(user_id: str, year: str, db: Session = Depends(get_db)):
+    return calendar_service.read_calendar_year(db, user_id, year)
