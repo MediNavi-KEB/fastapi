@@ -1,24 +1,26 @@
 from sqlalchemy.orm import Session
-from crud.favorite_crud import get_favorite, create_favorite, get_favorites, update_favorite, delete_favorite
-from dto.favorite_dto import FavoriteCreate, FavoriteUpdate, Favorite
+from fastapi import HTTPException
+from crud import favorite_crud
+from dto.favorite_dto import FavoriteCreateModel, FavoriteUpdateModel
+from typing import List
 
+def create_favorite(db: Session, favorite: FavoriteCreateModel):
+    return favorite_crud.create_favorite(db, favorite)
 
-def get_favorite_service(db: Session, favorite_id: int):
-    return get_favorite(db, favorite_id)
+def get_favorites(db: Session, user_id: str):
+    favorites = favorite_crud.get_favorites_by_user_id(db, user_id)
+    if not favorites:
+        raise HTTPException(status_code=404, detail="즐겨찾기 항목이 없습니다.")
+    return favorites
 
+def delete_favorite(db: Session, favorite_id: int):
+    favorite = favorite_crud.delete_favorite(db, favorite_id)
+    if not favorite:
+        raise HTTPException(status_code=404, detail="삭제할 즐겨찾기 항목이 없습니다.")
+    return favorite
 
-def create_favorite_service(db: Session, favorite: FavoriteCreate):
-    favorite_model = Favorite(name=favorite.name, user_id=favorite.user_id)
-    return create_favorite(db, favorite_model)
-
-
-def get_favorites_service(db: Session, skip: int = 0, limit: int = 10):
-    return get_favorites(db, skip, limit)
-
-
-def update_favorite_service(db: Session, favorite_id: int, favorite: FavoriteUpdate):
-    return update_favorite(db, favorite_id, favorite.name, favorite.user_id)
-
-
-def delete_favorite_service(db: Session, favorite_id: int):
-    return delete_favorite(db, favorite_id)
+def update_favorite(db: Session, favorite_id: int, favorite_update: FavoriteUpdateModel):
+    favorite = favorite_crud.update_favorite(db, favorite_id, favorite_update)
+    if not favorite:
+        raise HTTPException(status_code=404, detail="수정할 즐겨찾기 항목이 없습니다.")
+    return favorite
