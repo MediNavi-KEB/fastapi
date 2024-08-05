@@ -17,11 +17,11 @@ def get_dept(db: Session, user_disease: UserDiseaseCreateModel) -> List[Departme
     return [DepartmentModel.from_orm(dept) for dept in db_diseaseDept]
 
 
-def get_userDisease(db: Session, user_id: str):
-    db_userDisease = disease_crud.get_user_diseases(db, user_id)
-    if not db_userDisease:
-        raise HTTPException(status_code=400, detail="해당 사용자에 대한 질병 기록이 없습니다.")
-    return db_userDisease
+# def get_userDisease(db: Session, user_id: str):
+#     db_userDisease = disease_crud.get_user_diseases(db, user_id)
+#     if not db_userDisease:
+#         raise HTTPException(status_code=400, detail="해당 사용자에 대한 질병 기록이 없습니다.")
+#     return db_userDisease
 
 def create_user_disease(db: Session, user_disease: UserDiseaseCreateModel):
     # 질병이 존재하는지 확인
@@ -36,3 +36,7 @@ def create_user_disease(db: Session, user_disease: UserDiseaseCreateModel):
 
     added_disease = disease_crud.add_user_disease(db, db_user_disease)
     return {"message": "질병 정보가 성공적으로 저장되었습니다.", "data": added_disease}
+
+
+def get_department_by_disease(db: Session, disease_name: str):
+    return disease_crud.get_dept_by_disease_name(db, disease_name)

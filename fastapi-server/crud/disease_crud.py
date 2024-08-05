@@ -3,6 +3,7 @@ from db.models.disease import Disease, UserDisease, Department, DiseaseDepartmen
 from dto.disease_dto import DiseaseModel, DepartmentModel, DiseaseDepartmentModel, UserDiseaseCreateModel, UserDiseaseModel
 from typing import List
 
+
 def get_dept_by_user_disease(db: Session, user_disease: UserDiseaseCreateModel) -> List[Department]:
     disease = db.query(Disease).filter(Disease.disease_name == user_disease.disease_name).first()
     if not disease:
@@ -29,3 +30,20 @@ def add_user_disease(db: Session, user_disease: UserDisease):
 
 def get_user_diseases(db: Session, user_id: str, skip: int = 0, limit: int = 5):
     return db.query(UserDisease).filter(UserDisease.user_id == user_id).offset(skip).limit(limit).all()
+
+
+def get_department_ids_by_disease(db: Session, disease_name: str):
+    result = db.query(DiseaseDepartment.department_id)\
+               .join(Disease, Disease.disease_id == DiseaseDepartment.disease_id)\
+               .filter(Disease.disease_name == disease_name)\
+               .all()
+    return [r[0] for r in result]
+
+
+def get_dept_by_disease_name(db: Session, disease_name: str):
+    department_ids = get_department_ids_by_disease(db, disease_name)
+    if not department_ids:
+        return []
+
+    departments = db.query(Department).filter(Department.department_id.in_(department_ids)).all()
+    return departments
