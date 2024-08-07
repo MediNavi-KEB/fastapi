@@ -11,6 +11,7 @@ class CalendarCreateModel(BaseModel):
 
 
 class CalendarUpdateModel(BaseModel):
+    calendar_id: int
     date_time: Optional[datetime] = None
     memo_category: Optional[str] = None
     memo_content: Optional[str] = None

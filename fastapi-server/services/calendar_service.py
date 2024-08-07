@@ -39,3 +39,7 @@ def read_calendar_year(db: Session, user_id: str, year: str) -> List[CalendarUpd
     if not db_calendar:
         raise HTTPException(status_code=404, detail="등록된 메모가 없습니다.")
     return db_calendar
+
+
+def read_calendars_by_user(db: Session, user_id: str) -> List[CalendarUpdateModel]:
+    return calendar_crud.get_calendars_by_user(db, user_id)

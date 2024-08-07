@@ -18,6 +18,7 @@ def get_calendar_by_id_and_date(db: Session, user_id: str, date_str: str):
 
     return [
         CalendarUpdateModel(
+            calendar_id=calendar.calendar_id,
             date_time=calendar.date_time,
             memo_category=calendar.memo_category,
             memo_content=calendar.memo_content
@@ -34,12 +35,12 @@ def get_calendar_by_id_and_year(db: Session, user_id: str, year_str: str):
 
     return [
         CalendarUpdateModel(
+            calendar_id=calendar.calendar_id,
             date_time=calendar.date_time,
             memo_category=calendar.memo_category,
             memo_content=calendar.memo_content
         ) for calendar in db_calendar
     ]
-
 
 
 def create_calendar(db: Session, calendar: CalendarCreateModel, user_id: str):
@@ -74,3 +75,16 @@ def update_calendar_db(db: Session, db_calendar: Calendar, calendar_update: Cale
     db.commit()
     db.refresh(db_calendar)
     return db_calendar
+
+
+def get_calendars_by_user(db: Session, user_id: str):
+    db_calendar = db.query(Calendar).filter(Calendar.user_id == user_id).all()
+    return [
+        CalendarUpdateModel(
+            calendar_id=calendar.calendar_id,
+            date_time=calendar.date_time,
+            memo_category=calendar.memo_category,
+            memo_content=calendar.memo_content
+        ) for calendar in db_calendar
+    ]
+

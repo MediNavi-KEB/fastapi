@@ -32,3 +32,8 @@ def update_calendar(calendar_id: int, calendar_update: CalendarUpdateModel, db: 
 @calendar_router.get("/read/year/{user_id}/{year}", response_model=List[CalendarUpdateModel])
 def read_calendar_year(user_id: str, year: str, db: Session = Depends(get_db)):
     return calendar_service.read_calendar_year(db, user_id, year)
+
+
+@calendar_router.get("/read/{user_id}", response_model=List[CalendarUpdateModel])
+def read_calendars_by_user(user_id: str, db: Session = Depends(get_db)):
+    return calendar_service.read_calendars_by_user(db, user_id)
