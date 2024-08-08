@@ -1,45 +1,10 @@
 from sqlalchemy.orm import Session
 from db.models.calendar import Calendar
-from dto.calendar_dto import CalendarCreateModel, CalendarUpdateModel
-from datetime import datetime
-from sqlalchemy import cast, Date, extract
+from dto.calendar_dto import CalendarCreateModel, CalendarUpdateModel, CalendarReadModel
 
 
 def get_calendar_by_id(db: Session, calendar_id: int):
     return db.query(Calendar).filter(Calendar.calendar_id == calendar_id).first()
-
-
-def get_calendar_by_id_and_date(db: Session, user_id: str, date_str: str):
-    specific_date = datetime.strptime(date_str, "%Y-%m-%d").date()
-    db_calendar = db.query(Calendar).filter(
-        Calendar.user_id == user_id,
-        cast(Calendar.date_time, Date) == specific_date
-    ).all()
-
-    return [
-        CalendarUpdateModel(
-            date_time=calendar.date_time,
-            memo_category=calendar.memo_category,
-            memo_content=calendar.memo_content
-        ) for calendar in db_calendar
-    ]
-
-
-def get_calendar_by_id_and_year(db: Session, user_id: str, year_str: str):
-    specific_year = datetime.strptime(year_str, "%Y").year
-    db_calendar = db.query(Calendar).filter(
-        Calendar.user_id == user_id,
-        extract("year", Calendar.date_time) == specific_year
-    ).all()
-
-    return [
-        CalendarUpdateModel(
-            date_time=calendar.date_time,
-            memo_category=calendar.memo_category,
-            memo_content=calendar.memo_content
-        ) for calendar in db_calendar
-    ]
-
 
 
 def create_calendar(db: Session, calendar: CalendarCreateModel, user_id: str):
@@ -74,3 +39,16 @@ def update_calendar_db(db: Session, db_calendar: Calendar, calendar_update: Cale
     db.commit()
     db.refresh(db_calendar)
     return db_calendar
+
+
+def get_calendars_by_user(db: Session, user_id: str):
+    db_calendar = db.query(Calendar).filter(Calendar.user_id == user_id).all()
+    return [
+        CalendarReadModel(
+            calendar_id=calendar.calendar_id,
+            user_id=calendar.user_id,
+            date_time=calendar.date_time,
+            memo_category=calendar.memo_category,
+            memo_content=calendar.memo_content
+        ) for calendar in db_calendar
+    ]

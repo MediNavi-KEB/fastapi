@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from datetime import datetime
 
+
 class DiseaseModel(BaseModel):
     disease_id: int
     disease_name: str

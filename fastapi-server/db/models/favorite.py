@@ -1,12 +1,12 @@
-from sqlalchemy import Column, Integer, String, ForeignKey
-#from sqlalchemy.orm import relationship
+from sqlalchemy import Column, String, Integer, ForeignKey
 from db.session import Base
+
 
 class Favorite(Base):
     __tablename__ = "favorites"
 
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, index=True)
-    user_id = Column(Integer, ForeignKey("users.id"))
-
-    #user = relationship("User", back_populates="favorites")
+    favorite_id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(String(50), ForeignKey('users.user_id'), index=True)
+    hospital_name = Column(String(255), nullable=False)
+    hospital_address = Column(String(255), nullable=False)
+    hospital_phone = Column(String(20), nullable=False)

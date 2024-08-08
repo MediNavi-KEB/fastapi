@@ -1,30 +1,40 @@
 from sqlalchemy.orm import Session
 from db.models.favorite import Favorite
+from dto.favorite_dto import FavoriteCreateModel, FavoriteUpdateModel
 
-def get_favorite(db: Session, favorite_id: int):
-    return db.query(Favorite).filter(Favorite.id == favorite_id).first()
 
-def create_favorite(db: Session, favorite: Favorite):
-    db.add(favorite)
+def create_favorite(db: Session, favorite: FavoriteCreateModel):
+    db_favorite = Favorite(
+        user_id=favorite.user_id,
+        hospital_name=favorite.hospital_name,
+        hospital_address=favorite.hospital_address,
+        hospital_phone=favorite.hospital_phone
+    )
+    db.add(db_favorite)
     db.commit()
-    db.refresh(favorite)
-    return favorite
+    db.refresh(db_favorite)
+    return db_favorite
 
-def get_favorites(db: Session, skip: int = 0, limit: int = 10):
-    return db.query(Favorite).offset(skip).limit(limit).all()
 
-def update_favorite(db: Session, favorite_id: int, name: str, user_id: int):
-    favorite = db.query(Favorite).filter(Favorite.id == favorite_id).first()
-    if favorite:
-        favorite.name = name
-        favorite.user_id = user_id
+def get_favorites_by_user_id(db: Session, user_id: str):
+    return db.query(Favorite).filter(Favorite.user_id == user_id).all()
+
+
+def delete_favorite_by_name(db: Session, user_id: str, hospital_name: str):
+    db_favorite = db.query(Favorite).filter(Favorite.user_id == user_id, Favorite.hospital_name == hospital_name).first()
+    if db_favorite:
+        db.delete(db_favorite)
         db.commit()
-        db.refresh(favorite)
-    return favorite
+    return db_favorite
 
-def delete_favorite(db: Session, favorite_id: int):
-    favorite = db.query(Favorite).filter(Favorite.id == favorite_id).first()
-    if favorite:
-        db.delete(favorite)
-        db.commit()
-    return favorite
+
+def update_favorite(db: Session, favorite_id: int, favorite_update: FavoriteUpdateModel):
+    db_favorite = db.query(Favorite).filter(Favorite.favorite_id == favorite_id).first()
+    if db_favorite is None:
+        return None
+    db_favorite.hospital_name = favorite_update.hospital_name
+    db_favorite.hospital_address = favorite_update.hospital_address
+    db_favorite.hospital_phone = favorite_update.hospital_phone
+    db.commit()
+    db.refresh(db_favorite)
+    return db_favorite

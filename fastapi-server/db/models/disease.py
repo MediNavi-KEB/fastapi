@@ -2,17 +2,20 @@ from sqlalchemy import Column, String, Integer, DateTime,  ForeignKey, PrimaryKe
 from db.session import Base
 from datetime import datetime
 
+
 class Disease(Base):
     __tablename__ = "diseases"
 
     disease_id = Column(Integer, primary_key=True, index=True)
     disease_name = Column(String(255), nullable=False)
 
+
 class Department(Base):
     __tablename__ = "departments"
 
     department_id = Column(Integer, primary_key=True, index=True)
     department_name = Column(String(255), nullable=False)
+
 
 class DiseaseDepartment(Base):
     __tablename__ = "disease_departments"
@@ -23,6 +26,7 @@ class DiseaseDepartment(Base):
     __table_args__ = (
         PrimaryKeyConstraint('disease_id', 'department_id'),
     )
+
 
 class UserDisease(Base):
     __tablename__ = "chat_history"

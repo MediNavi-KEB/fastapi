@@ -1,17 +1,14 @@
 from pydantic import BaseModel
 
-class FavoriteBase(BaseModel):
-    name: str
-    user_id: int
 
-class FavoriteCreate(FavoriteBase):
-    pass
+class FavoriteCreateModel(BaseModel):
+    user_id: str
+    hospital_name: str
+    hospital_address: str
+    hospital_phone: str
 
-class FavoriteUpdate(FavoriteBase):
-    pass
 
-class Favorite(FavoriteBase):
-    id: int
-
-    class Config:
-        orm_mode: True
+class FavoriteUpdateModel(BaseModel):
+    hospital_name: str
+    hospital_address: str
+    hospital_phone: str
