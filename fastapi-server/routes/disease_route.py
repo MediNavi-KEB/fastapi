@@ -30,3 +30,18 @@ def get_department_by_disease(disease_name: str, db: Session = Depends(get_db)):
         return departments
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+
+@disease_router.get("/user/{user_id}/top-disease")
+def read_user_top_disease(user_id: str, db: Session = Depends(get_db)):
+    disease = disease_service.fetch_user_top_disease(db, user_id)
+    if disease is None:
+        raise HTTPException(status_code=404, detail="질병 정보가 없습니다.")
+    return {"disease_name": disease[0], "frequency": disease[1]}
+
+# 사용자의 질병 검색 빈도를 가져오는 엔드포인트
+@disease_router.get("/user/{user_id}/disease-frequencies")
+def read_user_disease_frequencies(user_id: str, db: Session = Depends(get_db)):
+    frequencies = disease_service.fetch_user_disease_frequencies(db, user_id)
+    return frequencies
