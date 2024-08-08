@@ -13,7 +13,7 @@ def create_favorite(favorite: FavoriteCreateModel, db: Session = Depends(get_db)
     return favorite_service.create_favorite(db, favorite)
 
 
-@favorite_router.get("/get/{user_id}", response_model=List[FavoriteCreateModel])
+@favorite_router.get("/get/{user_id}")
 def get_favorites(user_id: str, db: Session = Depends(get_db)):
     return favorite_service.get_favorites(db, user_id)
 
@@ -21,6 +21,11 @@ def get_favorites(user_id: str, db: Session = Depends(get_db)):
 @favorite_router.delete("/delete/{user_id}/{hospital_name}")
 def delete_favorite(user_id: str, hospital_name: str, db: Session = Depends(get_db)):
     return favorite_service.delete_favorite(db, user_id, hospital_name)
+
+
+@favorite_router.delete("/delete_by_id/{favorite_id}")
+def delete_favorite_by_id(favorite_id: int, db: Session = Depends(get_db)):
+    return favorite_service.delete_favorite_by_id(db, favorite_id)
 
 
 @favorite_router.put("/update/{favorite_id}")

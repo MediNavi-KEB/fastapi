@@ -46,11 +46,9 @@ def get_department_by_disease(db: Session, disease_name: str):
     return disease_crud.get_dept_by_disease_name(db, disease_name)
 
 
-# services/disease_service.py
-
-
 def fetch_user_top_disease(db: Session, user_id: str):
     return disease_crud.get_user_top_disease(db, user_id)
+
 
 def fetch_user_disease_frequencies(db: Session, user_id: str):
     diseases = disease_crud.get_user_disease_frequencies(db, user_id)

@@ -28,6 +28,14 @@ def delete_favorite_by_name(db: Session, user_id: str, hospital_name: str):
     return db_favorite
 
 
+def delete_favorite_by_id(db: Session, favorite_id: int):
+    db_favorite = db.query(Favorite).filter(Favorite.favorite_id == favorite_id).first()
+    if db_favorite:
+        db.delete(db_favorite)
+        db.commit()
+    return db_favorite
+
+
 def update_favorite(db: Session, favorite_id: int, favorite_update: FavoriteUpdateModel):
     db_favorite = db.query(Favorite).filter(Favorite.favorite_id == favorite_id).first()
     if db_favorite is None:

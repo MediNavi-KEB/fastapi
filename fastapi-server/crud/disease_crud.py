@@ -7,8 +7,6 @@ from sqlalchemy import func
 from db.models.disease import UserDisease
 
 
-
-
 def get_dept_by_user_disease(db: Session, user_disease: UserDiseaseCreateModel) -> List[Department]:
     disease = db.query(Disease).filter(Disease.disease_name == user_disease.disease_name).first()
     if not disease:
@@ -53,12 +51,14 @@ def get_dept_by_disease_name(db: Session, disease_name: str):
     departments = db.query(Department).filter(Department.department_id.in_(department_ids)).all()
     return departments
 
+
 def get_user_top_disease(db: Session, user_id: str):
     return db.query(UserDisease.disease_name, func.count(UserDisease.disease_name).label('frequency'))\
              .filter(UserDisease.user_id == user_id)\
              .group_by(UserDisease.disease_name)\
              .order_by(func.count(UserDisease.disease_name).desc())\
              .first()
+
 
 def get_user_disease_frequencies(db: Session, user_id: str):
     return db.query(UserDisease.disease_name, func.count(UserDisease.disease_name).label('frequency'))\

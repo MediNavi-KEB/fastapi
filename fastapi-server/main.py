@@ -4,6 +4,7 @@ from routes.user_route import user_router
 from routes.favorite_route import favorite_router
 from routes.calendar_route import calendar_router
 from routes.news_route import news_router
+from routes.disease_route import disease_router
 import uvicorn
 import logging
 

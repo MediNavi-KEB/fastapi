@@ -23,6 +23,13 @@ def delete_favorite(db: Session, user_id: str, hospital_name: str):
     return favorite
 
 
+def delete_favorite_by_id(db: Session, favorite_id: int):
+    favorite = favorite_crud.delete_favorite_by_id(db, favorite_id)
+    if not favorite:
+        raise HTTPException(status_code=404, detail="삭제할 즐겨찾기 항목이 없습니다.")
+    return favorite
+
+
 def update_favorite(db: Session, favorite_id: int, favorite_update: FavoriteUpdateModel):
     favorite = favorite_crud.update_favorite(db, favorite_id, favorite_update)
     if not favorite:
