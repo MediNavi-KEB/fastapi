@@ -4,6 +4,10 @@ from typing import List
 from crud import disease_crud
 from db.models.disease import Disease, UserDisease, Department, DiseaseDepartment
 from dto.disease_dto import DiseaseModel, DepartmentModel, DiseaseDepartmentModel, UserDiseaseCreateModel, UserDiseaseModel
+from sqlalchemy.orm import Session
+from crud import disease_crud
+
+
 
 
 # 1. get_dept_by_name을 통해 질병을 입력했을 때 해당 진료과가 나오도록 하고 없으면 없다는 것을 출력
@@ -40,3 +44,14 @@ def create_user_disease(db: Session, user_disease: UserDiseaseCreateModel):
 
 def get_department_by_disease(db: Session, disease_name: str):
     return disease_crud.get_dept_by_disease_name(db, disease_name)
+
+
+# services/disease_service.py
+
+
+def fetch_user_top_disease(db: Session, user_id: str):
+    return disease_crud.get_user_top_disease(db, user_id)
+
+def fetch_user_disease_frequencies(db: Session, user_id: str):
+    diseases = disease_crud.get_user_disease_frequencies(db, user_id)
+    return {disease: freq for disease, freq in diseases}
