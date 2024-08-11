@@ -15,7 +15,8 @@ def create_user(db: Session, user: UserCreateModel):
         phone=user.phone,
         email=user.email,
         address=user.address,
-        gender=user.gender
+        gender=user.gender if user.gender else '남성',
+        chat_description='O'
     )
     db.add(db_user)
     db.commit()
@@ -44,7 +45,18 @@ def update_user_db(db: Session, db_user: User, user_update: UserUpdateModel):
         db_user.email = user_update.email
     if user_update.gender is not None:
         db_user.gender = user_update.gender
+    if user_update.chat_description is not None:
+        db_user.chat_description = user_update.chat_description
 
     db.commit()
     db.refresh(db_user)
+    return db_user
+
+
+def update_chat_description(db: Session, user_id: str, chat_description: str):
+    db_user = db.query(User).filter(User.user_id == user_id).first()
+    if db_user:
+        db_user.chat_description = chat_description
+        db.commit()
+        db.refresh(db_user)
     return db_user

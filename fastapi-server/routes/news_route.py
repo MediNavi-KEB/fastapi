@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, Request
 from sqlalchemy.orm import Session
 from services.news_service import get_news, start_crawl_and_store
 from db.connection import get_db
-from dto.news_dto import NewsCreateModel
+from dto.news_dto import NewsCreateModel, NewsCrawlerModel
 import logging
 from db.models.news import Base
 from db.session import engine
@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 news_router = APIRouter(tags=["News"])
 
 
-@news_router.get("/read", response_model=NewsCreateModel)
+@news_router.get("/read/{user_id}", response_model=NewsCreateModel)
 def read_news(user_id: str, db: Session = Depends(get_db)):
     return get_news(db, user_id)
 
@@ -28,9 +28,5 @@ def on_startup():
 
 
 @news_router.post("/crawler")
-async def login_and_crawl(request: Request, db: Session = Depends(get_db)):
-    form_data = await request.json()
-    user_id = form_data.get("user_id")
-    disease_name = form_data.get("disease_name")
-
-    return start_crawl_and_store(db, user_id, disease_name)
+async def login_and_crawl(request: NewsCrawlerModel, db: Session = Depends(get_db)):
+    return start_crawl_and_store(db, request.user_id, request.disease_name)

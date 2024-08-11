@@ -2,6 +2,7 @@ from pydantic import BaseModel
 from datetime import datetime
 from typing import Optional
 
+
 class NewsCreateModel(BaseModel):
     title: Optional[str]
     summary: Optional[str]
@@ -10,3 +11,8 @@ class NewsCreateModel(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class NewsCrawlerModel(BaseModel):
+    user_id: str
+    disease_name: str

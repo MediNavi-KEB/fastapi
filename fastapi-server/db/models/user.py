@@ -13,3 +13,4 @@ class User(Base):
     email = Column(String(100))
     address = Column(String(255))
     gender = Column(ENUM('남성', '여성'))
+    chat_description = Column(ENUM('O', 'X'))

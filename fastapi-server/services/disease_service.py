@@ -52,4 +52,8 @@ def fetch_user_top_disease(db: Session, user_id: str):
 
 def fetch_user_disease_frequencies(db: Session, user_id: str):
     diseases = disease_crud.get_user_disease_frequencies(db, user_id)
-    return {disease: freq for disease, freq in diseases}
+    return [{"name": disease, "frequency": freq} for disease, freq in diseases]
+
+
+def get_recent_disease_data(db: Session, user_id: str):
+    return disease_crud.get_recent_disease_data(db, user_id)

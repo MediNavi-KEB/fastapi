@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from dto.user_dto import UserCreateModel, UserLoginModel, UserUpdateModel, UserIdCheckModel
+from dto.user_dto import UserCreateModel, UserLoginModel, UserUpdateModel, UserIdCheckModel, ChatDescriptionUpdateModel
 from services import user_service
 from db.connection import get_db
 
@@ -36,3 +36,8 @@ def check_id(request: UserIdCheckModel, db:Session = Depends(get_db)):
 @user_router.get("/get/{user_id}")
 def get_user(user_id: str, db: Session = Depends(get_db)):
     return user_service.get_user(db, user_id)
+
+
+@user_router.put("/update/chat_description/{user_id}")
+def update_chat_description(user_id: str, chat_description: ChatDescriptionUpdateModel, db: Session = Depends(get_db)):
+    return user_service.update_chat_description(db, user_id, chat_description.chat_description)

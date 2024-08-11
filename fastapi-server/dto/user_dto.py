@@ -24,7 +24,12 @@ class UserUpdateModel(BaseModel):
     email: Optional[str] = None
     address: Optional[str] = None
     gender: Optional[str] = None
+    chat_description: Optional[str] = None
 
 
 class UserIdCheckModel(BaseModel):
-    user_id : str
+    user_id: str
+
+
+class ChatDescriptionUpdateModel(BaseModel):
+    chat_description: str

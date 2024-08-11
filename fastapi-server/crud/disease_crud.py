@@ -1,11 +1,10 @@
-from sqlalchemy.orm import Session
 from db.models.disease import Disease, UserDisease, Department, DiseaseDepartment
 from dto.disease_dto import DiseaseModel, DepartmentModel, DiseaseDepartmentModel, UserDiseaseCreateModel, UserDiseaseModel
 from typing import List
 from sqlalchemy.orm import Session
-from sqlalchemy import func
 from db.models.disease import UserDisease
-
+from sqlalchemy.orm import aliased
+from sqlalchemy import func
 
 def get_dept_by_user_disease(db: Session, user_disease: UserDiseaseCreateModel) -> List[Department]:
     disease = db.query(Disease).filter(Disease.disease_name == user_disease.disease_name).first()
@@ -65,3 +64,27 @@ def get_user_disease_frequencies(db: Session, user_id: str):
              .filter(UserDisease.user_id == user_id)\
              .group_by(UserDisease.disease_name)\
              .all()
+
+
+def get_recent_disease_data(db: Session, user_id: str, limit= 4):
+    UserDiseaseAlias = aliased(UserDisease)
+
+    # Subquery to get the most recent entry for each disease_name
+    subquery = (
+        db.query(UserDiseaseAlias.disease_name, func.max(UserDiseaseAlias.date_time).label('max_date_time'))
+        .filter(UserDiseaseAlias.user_id == user_id)
+        .group_by(UserDiseaseAlias.disease_name)
+        .subquery()
+    )
+
+    # Join the subquery with the original table and order by date_time
+    query = (
+        db.query(UserDisease)
+        .join(subquery, (UserDisease.disease_name == subquery.c.disease_name) & (
+                    UserDisease.date_time == subquery.c.max_date_time))
+        .filter(UserDisease.user_id == user_id)
+        .order_by(UserDisease.date_time.desc())
+        .limit(limit)
+    )
+
+    return query.all()

@@ -41,3 +41,7 @@ def check_duplicate_id(db: Session, user_id : str):
 def get_user(db: Session, user_id: str):
     db_user = user_crud.get_user_by_id(db, user_id)
     return db_user
+
+
+def update_chat_description(db: Session, user_id: str, chat_description: str):
+    return user_crud.update_chat_description(db, user_id, chat_description)
