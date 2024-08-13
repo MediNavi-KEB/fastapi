@@ -3,6 +3,7 @@ from crud import calendar_crud
 from dto.calendar_dto import CalendarCreateModel, CalendarUpdateModel, CalendarReadModel
 from fastapi import HTTPException
 from typing import List
+from datetime import timedelta
 
 
 def register_calendar(db: Session, calendar: CalendarCreateModel):
@@ -10,7 +11,23 @@ def register_calendar(db: Session, calendar: CalendarCreateModel):
         raise HTTPException(status_code=400, detail="로그인 후 사용해 주세요.")
     if not calendar.memo_content:
         raise HTTPException(status_code=400, detail="메모 내용을 입력해 주세요.")
-    return calendar_crud.create_calendar(db, calendar, calendar.user_id)
+
+    start_date = calendar.start_date
+    end_date = calendar.end_date
+
+    current_date = start_date
+    while current_date <= end_date:
+        single_day_calendar = CalendarCreateModel(
+            user_id=calendar.user_id,
+            start_date=current_date,  # 이 부분을 단일 datetime으로 설정
+            end_date=current_date,  # 이 부분을 단일 datetime으로 설정
+            memo_category=calendar.memo_category,
+            memo_content=calendar.memo_content
+        )
+        calendar_crud.create_calendar(db, single_day_calendar, calendar.user_id)
+        current_date += timedelta(days=1)
+
+    return {"message": "메모가 성공적으로 저장되었습니다."}
 
 
 def delete_calendar(db: Session, calendar_id: int):

@@ -12,8 +12,8 @@ def create_news(db: Session, news: NewsCreateModel, user_id: str, disease_name: 
     return db_news
 
 
-def get_news(db: Session, user_id: str):
-    news = db.query(News).filter(News.user_id == user_id).order_by(func.random()).first()
+def get_news(db: Session, user_id: str, limit=2):
+    news = db.query(News).filter(News.user_id == user_id).limit(limit).all()
     return news
 
 

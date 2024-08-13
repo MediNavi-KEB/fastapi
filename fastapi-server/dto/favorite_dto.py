@@ -6,9 +6,13 @@ class FavoriteCreateModel(BaseModel):
     hospital_name: str
     hospital_address: str
     hospital_phone: str
+    latitude: str
+    longitude: str
 
 
 class FavoriteUpdateModel(BaseModel):
     hospital_name: str
     hospital_address: str
     hospital_phone: str
+    latitude: str
+    longitude: str

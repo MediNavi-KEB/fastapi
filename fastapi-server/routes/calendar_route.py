@@ -9,7 +9,7 @@ from typing import List
 calendar_router = APIRouter(tags=["Calendar"])
 
 
-@calendar_router.post("/register", response_model=CalendarCreateModel)
+@calendar_router.post("/register")
 def register_calendar(calendar: CalendarCreateModel, db: Session = Depends(get_db)):
     return calendar_service.register_calendar(db, calendar)
 

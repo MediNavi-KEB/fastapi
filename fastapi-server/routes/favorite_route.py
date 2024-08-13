@@ -10,6 +10,7 @@ favorite_router = APIRouter(tags=["Favorites"])
 
 @favorite_router.post("/create", response_model=FavoriteCreateModel)
 def create_favorite(favorite: FavoriteCreateModel, db: Session = Depends(get_db)):
+    print(favorite)
     return favorite_service.create_favorite(db, favorite)
 
 

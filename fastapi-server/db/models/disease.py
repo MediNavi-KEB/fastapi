@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, Integer, DateTime,  ForeignKey, PrimaryKeyConstraint
+from sqlalchemy import Column, String, Integer, DateTime,  ForeignKey, PrimaryKeyConstraint, Text
 from db.session import Base
 from datetime import datetime
 
@@ -8,6 +8,8 @@ class Disease(Base):
 
     disease_id = Column(Integer, primary_key=True, index=True)
     disease_name = Column(String(255), nullable=False)
+    description = Column(Text, nullable=True)
+    icon = Column(String(10), nullable=True)
 
 
 class Department(Base):

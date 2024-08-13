@@ -8,8 +8,11 @@ def create_favorite(db: Session, favorite: FavoriteCreateModel):
         user_id=favorite.user_id,
         hospital_name=favorite.hospital_name,
         hospital_address=favorite.hospital_address,
-        hospital_phone=favorite.hospital_phone
+        hospital_phone=favorite.hospital_phone,
+        latitude=favorite.latitude,
+        longitude=favorite.longitude
     )
+
     db.add(db_favorite)
     db.commit()
     db.refresh(db_favorite)
@@ -43,6 +46,8 @@ def update_favorite(db: Session, favorite_id: int, favorite_update: FavoriteUpda
     db_favorite.hospital_name = favorite_update.hospital_name
     db_favorite.hospital_address = favorite_update.hospital_address
     db_favorite.hospital_phone = favorite_update.hospital_phone
+    db_favorite.latitude = favorite_update.latitude
+    db_favorite.longitude = favorite_update.longitude
     db.commit()
     db.refresh(db_favorite)
     return db_favorite

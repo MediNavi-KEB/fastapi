@@ -1,11 +1,12 @@
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, List
 from datetime import datetime
 
 
 class CalendarCreateModel(BaseModel):
     user_id: str
-    date_time: Optional[datetime]
+    start_date: datetime
+    end_date: datetime
     memo_category: Optional[str]
     memo_content: Optional[str]
 

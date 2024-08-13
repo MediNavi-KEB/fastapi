@@ -57,3 +57,11 @@ def fetch_user_disease_frequencies(db: Session, user_id: str):
 
 def get_recent_disease_data(db: Session, user_id: str):
     return disease_crud.get_recent_disease_data(db, user_id)
+
+
+def get_disease_description(db: Session, disease_name: str):
+    return disease_crud.get_disease_description(db, disease_name)
+
+
+def get_disease_icon(db: Session, disease_name: str):
+    return disease_crud.get_disease_icon(db, disease_name)

@@ -10,7 +10,7 @@ def get_calendar_by_id(db: Session, calendar_id: int):
 def create_calendar(db: Session, calendar: CalendarCreateModel, user_id: str):
     db_calendar = Calendar(
         user_id=user_id,
-        date_time=calendar.date_time,
+        date_time=calendar.start_date,
         memo_category=calendar.memo_category,
         memo_content=calendar.memo_content
     )

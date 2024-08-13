@@ -51,3 +51,14 @@ def read_user_disease_frequencies(user_id: str, db: Session = Depends(get_db)):
 @disease_router.get("/get/data-recent/{user_id}")
 def get_recent_disease_data(user_id: str, db: Session = Depends(get_db)):
     return disease_service.get_recent_disease_data(db, user_id)
+
+
+@disease_router.get("/get/description/{disease_name}")
+def get_disease_description(disease_name: str, db: Session = Depends(get_db)):
+    return disease_service.get_disease_description(db, disease_name)
+
+
+@disease_router.get("/get/icon/{disease_name}")
+def get_disease_icon(disease_name: str, db: Session = Depends(get_db)):
+    print(f"Received disease_name: {disease_name}")  # 디버그용 출력
+    return disease_service.get_disease_icon(db, disease_name)

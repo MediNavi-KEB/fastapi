@@ -46,7 +46,7 @@ def crawl_and_store(db: Session, user_id: str, disease_name: str):
 
     logger.info("Starting crawl and store")
     try:
-        for page in range(1, 10):
+        for page in range(1):
             url = f"{BASE_URL}/page/{page}/?s={disease_name}"
             response = requests.get(url)
 
@@ -55,7 +55,9 @@ def crawl_and_store(db: Session, user_id: str, disease_name: str):
                 soup = BeautifulSoup(html, "html.parser")
                 articles = soup.find_all("h2", class_="title")
 
-                for article in articles:
+                for i, article in enumerate(articles):
+                    if i == 2:
+                        break
                     a_tag = article.find("a", class_="post-url post-title")
                     if a_tag:
                         title = a_tag.get_text().strip()
