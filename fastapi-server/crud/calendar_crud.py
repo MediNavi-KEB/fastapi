@@ -1,6 +1,8 @@
 from sqlalchemy.orm import Session
 from db.models.calendar import Calendar
 from dto.calendar_dto import CalendarCreateModel, CalendarUpdateModel, CalendarReadModel
+from sqlalchemy import func
+from datetime import datetime, timedelta
 
 
 def get_calendar_by_id(db: Session, calendar_id: int):
@@ -52,3 +54,22 @@ def get_calendars_by_user(db: Session, user_id: str):
             memo_content=calendar.memo_content
         ) for calendar in db_calendar
     ]
+
+
+def get_current_month_frequencies(db: Session, user_id: str):
+    start_of_month = datetime(datetime.now().year, datetime.now().month, 1)
+    end_of_month = start_of_month + timedelta(days=32)
+    end_of_month = datetime(end_of_month.year, end_of_month.month, 1)
+
+    frequencies = db.query(
+        Calendar.memo_category,
+        func.count(Calendar.memo_category).label("frequency")
+    ).filter(
+        Calendar.user_id == user_id,
+        Calendar.date_time >= start_of_month,
+        Calendar.date_time < end_of_month
+    ).group_by(
+        Calendar.memo_category
+    ).all()
+
+    return frequencies

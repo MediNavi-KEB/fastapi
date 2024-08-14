@@ -10,5 +10,6 @@ class Favorite(Base):
     hospital_name = Column(String(255), nullable=False)
     hospital_address = Column(String(255), nullable=False)
     hospital_phone = Column(String(20), nullable=False)
-    latitude = Column(String(20), nullable=True)
-    longitude = Column(String(20), nullable=True)
+    latitude = Column(String(40), nullable=True)
+    longitude = Column(String(40), nullable=True)
+    category = Column(String(20), nullable=True)

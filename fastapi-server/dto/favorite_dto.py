@@ -8,6 +8,7 @@ class FavoriteCreateModel(BaseModel):
     hospital_phone: str
     latitude: str
     longitude: str
+    category: str
 
 
 class FavoriteUpdateModel(BaseModel):
@@ -16,3 +17,4 @@ class FavoriteUpdateModel(BaseModel):
     hospital_phone: str
     latitude: str
     longitude: str
+    category: str

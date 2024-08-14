@@ -10,7 +10,8 @@ def create_favorite(db: Session, favorite: FavoriteCreateModel):
         hospital_address=favorite.hospital_address,
         hospital_phone=favorite.hospital_phone,
         latitude=favorite.latitude,
-        longitude=favorite.longitude
+        longitude=favorite.longitude,
+        category=favorite.category
     )
 
     db.add(db_favorite)
@@ -48,6 +49,7 @@ def update_favorite(db: Session, favorite_id: int, favorite_update: FavoriteUpda
     db_favorite.hospital_phone = favorite_update.hospital_phone
     db_favorite.latitude = favorite_update.latitude
     db_favorite.longitude = favorite_update.longitude
+    db_favorite.category = favorite_update.category
     db.commit()
     db.refresh(db_favorite)
     return db_favorite

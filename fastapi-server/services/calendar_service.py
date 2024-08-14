@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 from crud import calendar_crud
 from dto.calendar_dto import CalendarCreateModel, CalendarUpdateModel, CalendarReadModel
 from fastapi import HTTPException
-from typing import List
+from typing import List, Dict
 from datetime import timedelta
 
 
@@ -46,3 +46,19 @@ def update_calendar(db: Session, calendar_id: int, calendar_update: CalendarUpda
 
 def read_calendars_by_user(db: Session, user_id: str) -> List[CalendarReadModel]:
     return calendar_crud.get_calendars_by_user(db, user_id)
+
+
+def get_current_month_frequencies(db: Session, user_id: str) -> Dict[str, int]:
+    frequencies = calendar_crud.get_current_month_frequencies(db, user_id)
+
+    # 기본 카테고리 빈도수를 0으로 설정
+    result = {
+        "통증": 0,
+        "약": 0,
+        "병원": 0
+    }
+
+    for frequency in frequencies:
+        result[frequency.memo_category] = frequency.frequency
+
+    return result
